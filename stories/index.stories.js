@@ -1,19 +1,17 @@
 import React from 'react';
 
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 
-import { Button, Welcome } from '@storybook/react/demo';
+import { Toggle, TogglePessimistic, ToggleOptimistic } from './toggle';
+import { createFakeApiHandler, createFakeFailHandler } from './api';
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+const apiHandler = createFakeApiHandler(1000);
+const failHander = createFakeFailHandler(1000);
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
-  ));
+storiesOf('Toggle', module)
+  .add('simple example', () => <Toggle apiUpdate={apiHandler} />)
+  .add('simple example (request fails)', () => <Toggle apiUpdate={failHander} />)
+  .add('pessimistic example', () => <TogglePessimistic apiUpdate={apiHandler} />)
+  .add('pessimistic example (request fails)', () => <TogglePessimistic apiUpdate={failHander} />)
+  .add('optimistic example', () => <ToggleOptimistic apiUpdate={apiHandler} />)
+  .add('optimistic example (request fails)', () => <ToggleOptimistic apiUpdate={failHander} />);
